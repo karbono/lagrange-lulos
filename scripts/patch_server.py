@@ -38,7 +38,7 @@ def patch_app_coordinator(path: Path) -> None:
         f"                    )\n"
         f"                )\n"
         f"                showLogin(\n"
-        f"                    message = null,\n"
+        f'                    message = "",\n'
         f"                    destination = PostLoginDestination.Browser\n"
         f"                )\n"
         f"                return@launch\n"
