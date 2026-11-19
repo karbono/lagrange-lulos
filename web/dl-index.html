@@ -57,6 +57,7 @@ a.card:hover{
 }
 a.card.remoto:hover{border-color:#5ee0ff;box-shadow:0 8px 28px #0008,0 0 0 1px #5ee0ff}
 a.card.libros:hover{border-color:#ffbf5e;box-shadow:0 8px 28px #0008,0 0 0 1px #ffbf5e}
+a.card.jellyfin:hover{border-color:#b58cff;box-shadow:0 8px 28px #0008,0 0 0 1px #b58cff}
 .meta{display:flex;flex-direction:column;gap:.2rem;min-width:0}
 .title{font-size:1.1rem;font-weight:700;display:flex;align-items:center;flex-wrap:wrap;gap:.5rem}
 .badge{
@@ -67,11 +68,13 @@ a.card.libros:hover{border-color:#ffbf5e;box-shadow:0 8px 28px #0008,0 0 0 1px #
 }
 .remoto .badge{color:#041624;background:#5ee0ff}
 .libros .badge{color:#260c03;background:#ffbf5e}
+.jellyfin .badge{color:#150826;background:#b58cff}
 .desc{font-size:.88rem;color:var(--mut)}
 .path{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;color:#7fdcc7;margin-top:.15rem}
 .arrow{flex:none;color:var(--accent)}
 .remoto .arrow{color:#5ee0ff}
 .libros .arrow{color:#ffbf5e}
+.jellyfin .arrow{color:#b58cff}
 </style>
 </head>
 <body>
@@ -96,6 +99,15 @@ a.card.libros:hover{border-color:#ffbf5e;box-shadow:0 8px 28px #0008,0 0 0 1px #
         <span class="title">Lectura de libros <span class="badge">Lagrange Reader</span></span>
         <span class="desc">App Android preconfigurada para BookOrbit.</span>
         <span class="path">/libros</span>
+      </div>
+      <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+    </a>
+
+    <a class="card jellyfin" href="/jellyfin">
+      <div class="meta">
+        <span class="title">Cine y series <span class="badge">Jellyfin</span></span>
+        <span class="desc">App Android (con Chromecast) preconfigurada para Jellyfin.</span>
+        <span class="path">/jellyfin</span>
       </div>
       <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
     </a>
