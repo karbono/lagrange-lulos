@@ -1,0 +1,166 @@
+name: Build Custom Lagrange APK
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force rebuild even if version matches'
+        type: boolean
+        default: false
+      tag:
+        description: 'Specific upstream tag (e.g. v2.1.3). Empty = latest release'
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+env:
+  UPSTREAM_REPO: van-geaux/lagrange-reader
+  SERVER_URL: https://book.lulospi.party
+  SERVER_NAME: BookOrbit
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.compare.outputs.should_build }}
+      tag: ${{ steps.compare.outputs.tag }}
+      version: ${{ steps.compare.outputs.version }}
+    steps:
+      - name: Check upstream vs published version
+        id: compare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -n "${{ inputs.tag }}" ]; then
+            TAG="${{ inputs.tag }}"
+          else
+            TAG=$(curl -fsSL "https://api.github.com/repos/${UPSTREAM_REPO}/releases/latest" | jq -r '.tag_name')
+          fi
+          test -n "$TAG" && [ "$TAG" != "null" ] || { echo "Failed to resolve upstream tag" >&2; exit 1; }
+          VERSION="${TAG#v}"
+          echo "Upstream tag: $TAG (version $VERSION)"
+
+          CURRENT=$(curl -fsSL "https://github.com/${GITHUB_REPOSITORY}/releases/download/custom/lagrange-lulos-VERSION.txt" 2>/dev/null | tr -d '[:space:]' || true)
+          echo "Published version: ${CURRENT:-<none>}"
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          if [ "${{ inputs.force }}" = "true" ] || [ "$VERSION" != "$CURRENT" ]; then
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Up to date ($VERSION). Skipping build."
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.should_build == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out customizer repo
+        uses: actions/checkout@v4
+
+      - name: Clone upstream Lagrange Reader (${{ needs.check.outputs.tag }})
+        run: |
+          git clone --depth 1 --branch "${{ needs.check.outputs.tag }}" \
+            "https://github.com/${UPSTREAM_REPO}.git" upstream
+
+      - name: Patch default BookOrbit server
+        run: |
+          python3 scripts/patch_server.py upstream/app/src/main/java/com/vangeaux/lagrange/AppCoordinator.kt
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      - name: Install Android SDK packages
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+
+      - name: Configure release signing
+        working-directory: upstream
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+        run: |
+          test -n "$RELEASE_KEYSTORE_BASE64" || { echo 'Missing RELEASE_KEYSTORE_BASE64 secret.' >&2; exit 1; }
+          test -n "$RELEASE_STORE_PASSWORD" || { echo 'Missing RELEASE_STORE_PASSWORD secret.' >&2; exit 1; }
+          test -n "$RELEASE_KEY_ALIAS" || { echo 'Missing RELEASE_KEY_ALIAS secret.' >&2; exit 1; }
+          test -n "$RELEASE_KEY_PASSWORD" || { echo 'Missing RELEASE_KEY_PASSWORD secret.' >&2; exit 1; }
+          printf '%s' "$RELEASE_KEYSTORE_BASE64" | base64 --decode > release-key.jks
+          {
+            printf 'storeFile=release-key.jks\n'
+            printf 'storePassword=%s\n' "$RELEASE_STORE_PASSWORD"
+            printf 'keyAlias=%s\n' "$RELEASE_KEY_ALIAS"
+            printf 'keyPassword=%s\n' "$RELEASE_KEY_PASSWORD"
+          } > keystore.properties
+
+      - name: Build signed release APKs
+        working-directory: upstream
+        run: ./gradlew assembleRelease -PreleaseAbiSplits --no-daemon --console=plain
+
+      - name: Verify injected server URL and package fixed-name assets
+        run: |
+          OUT="upstream/app/build/outputs/apk/release"
+          DIST="dist"
+          mkdir -p "$DIST"
+
+          cp "$OUT/app-universal-release.apk" "$DIST/lagrange-lulos.apk"
+          cp "$OUT/app-arm64-v8a-release.apk" "$DIST/lagrange-lulos-arm64.apk"
+
+          python3 scripts/verify_apk.py "$DIST/lagrange-lulos.apk" "$DIST/lagrange-lulos-arm64.apk"
+
+          printf '%s\n' "${{ needs.check.outputs.version }}" > "$DIST/lagrange-lulos-VERSION.txt"
+          (cd "$DIST" && sha256sum lagrange-lulos.apk lagrange-lulos-arm64.apk > lagrange-lulos-SHA256SUMS.txt)
+          cat "$DIST/lagrange-lulos-SHA256SUMS.txt"
+
+      - name: Publish custom release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ needs.check.outputs.tag }}"
+          VER="${{ needs.check.outputs.version }}"
+          NOTES=$(cat <<EOF
+          Compilación automática de [Lagrange Reader ${TAG}](https://github.com/${UPSTREAM_REPO}/releases/tag/${TAG}) preconfigurada para **${SERVER_URL}** (BookOrbit).
+
+          Solo hace falta introducir usuario y contraseña al abrir la app.
+
+          - \`lagrange-lulos.apk\`: APK universal (recomendado para cualquier Android)
+          - \`lagrange-lulos-arm64.apk\`: APK solo ARM64 (más ligero)
+          EOF
+          )
+          if gh release view custom >/dev/null 2>&1; then
+            gh release upload custom \
+              dist/lagrange-lulos.apk \
+              dist/lagrange-lulos-arm64.apk \
+              dist/lagrange-lulos-VERSION.txt \
+              dist/lagrange-lulos-SHA256SUMS.txt \
+              --clobber
+            gh release edit custom \
+              --title "Lagrange lulospi (${VER})" \
+              --notes "$NOTES"
+          else
+            gh release create custom \
+              dist/lagrange-lulos.apk \
+              dist/lagrange-lulos-arm64.apk \
+              dist/lagrange-lulos-VERSION.txt \
+              dist/lagrange-lulos-SHA256SUMS.txt \
+              --title "Lagrange lulospi (${VER})" \
+              --notes "$NOTES"
+          fi
