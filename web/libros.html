@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Biblioteca · Lagrange Reader</title>
+<title>Lectura galáctica de libros</title>
 <meta name="description" content="Descarga Lagrange Reader preconfigurado para BookOrbit.">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#050d18">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=http://www.w3.org/2000/svg viewBox=0 0 32 32><rect width=32 height=32 rx=8 fill=%230a192e/><path d=M7 9.5C7 8.7 7.7 8 8.5 8h6.5a2 2 0 0 1 2 2v13a1.5 1.5 0 0 0-1.5-1.5H8.5A1.5 1.5 0 0 1 7 20V9.5Zm18 0C25 8.7 24.3 8 23.5 8H17a2 2 0 0 0-2 2v13a1.5 1.5 0 0 1 1.5-1.5h7a1.5 1.5 0 0 0 1.5-1.5V9.5Z stroke=%235ee0ff stroke-width=2 stroke-linecap=round stroke-linejoin=round fill=none/></svg>">
+<meta name="theme-color" content="#180803">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=http://www.w3.org/2000/svg viewBox=0 0 32 32><rect width=32 height=32 rx=8 fill=%23260d05/><path d=M7 9.5C7 8.7 7.7 8 8.5 8h6.5a2 2 0 0 1 2 2v13a1.5 1.5 0 0 0-1.5-1.5H8.5A1.5 1.5 0 0 1 7 20V9.5Zm18 0C25 8.7 24.3 8 23.5 8H17a2 2 0 0 0-2 2v13a1.5 1.5 0 0 1 1.5-1.5h7a1.5 1.5 0 0 0 1.5-1.5V9.5Z stroke=%23ffbf5e stroke-width=2 stroke-linecap=round stroke-linejoin=round fill=none/></svg>">
 <style>
 :root{
-  --bg:#050d18; --bg2:#0a1728; --card:#0e2038; --line:#1e3a5c;
-  --fg:#ebf6ff; --mut:#9db8d2; --cyan:#5ee0ff;
-  --btn:#165c8c; --btn-end:#1e76b0; --btn2:#132742; --btn2-h:#183356;
+  --bg:#180803; --bg2:#240c04; --card:#331206; --line:#61250e;
+  --fg:#fff4e4; --mut:#d9ad8e; --accent:#ffbf5e;
+  --btn:#9c3703; --btn-end:#c44c0c; --btn2:#3a1507; --btn2-h:#4f1d0a;
 }
 *{box-sizing:border-box}
 html{background:var(--bg)}
@@ -22,28 +22,28 @@ body{
   line-height:1.5;
   color:var(--fg);
   background:
-    radial-gradient(1100px 560px at 85% -8%,#143961 0,transparent 60%),
-    radial-gradient(820px 460px at -10% 28%,#0e2b4d 0,transparent 55%),
+    radial-gradient(1100px 560px at 85% -8%,#6e2304 0,transparent 60%),
+    radial-gradient(820px 460px at -10% 28%,#4f1704 0,transparent 55%),
     var(--bg);
   min-height:100vh;
 }
-.wrap{max-width:34rem;margin:0 auto;padding:1.25rem 1rem 3rem}
-header{margin-bottom:.75rem}
-.eyebrow{
-  display:inline-block;
-  font-size:.72rem;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--cyan);
-  background:#0c2844;
-  border:1px solid #1d4a75;
-  border-radius:999px;
-  padding:.18rem .65rem;
-  margin-bottom:.6rem;
+.wrap{max-width:34rem;margin:0 auto;padding:1rem 1rem 3rem}
+.hero{
+  display:block;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 12px 40px #000a,0 0 28px #ffbf5e20,0 0 0 1px #7d3210;
+  margin-top:.5rem;
+  transition:transform .18s ease,box-shadow .18s ease;
 }
-h1{font-size:1.55rem;line-height:1.2;margin:0 0 .35rem;text-wrap:balance}
-.lead{margin:.35rem 0 .2rem;font-size:1rem;color:var(--fg);text-wrap:pretty}
-.ver{color:var(--mut);font-size:.85rem;margin:.3rem 0 0;min-height:1.25em}
+.hero:hover{
+  transform:translateY(-1px);
+  box-shadow:0 16px 44px #000c,0 0 32px #ffbf5e33,0 0 0 1px var(--accent);
+}
+.hero img{display:block;width:100%;height:auto;aspect-ratio:1024/338}
+.lead{margin:1.25rem 0 .2rem;font-size:1.05rem;text-wrap:pretty}
+.ver{color:var(--mut);font-size:.85rem;margin:0;min-height:1.25em}
+p,li,details{text-wrap:pretty}
 section{
   background:linear-gradient(180deg,var(--card),var(--bg2));
   border:1px solid var(--line);
@@ -52,16 +52,16 @@ section{
   margin:1rem 0;
 }
 section.mine{
-  border-color:var(--cyan);
-  box-shadow:0 0 0 1px var(--cyan),0 0 26px #5ee0ff24;
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent),0 0 26px #ffbf5e24;
 }
-h2{font-size:1.05rem;margin:0 0 .65rem;display:flex;align-items:center;gap:.5rem}
+h2{font-size:1.1rem;margin:0 0 .6rem;display:flex;align-items:center;gap:.5rem;text-wrap:balance}
 .tag{
   font-size:.7rem;
-  font-weight:600;
-  color:#041624;
-  background:var(--cyan);
-  padding:.12rem .5rem;
+  font-weight:700;
+  color:#260c03;
+  background:var(--accent);
+  padding:.14rem .52rem;
   border-radius:999px;
 }
 a.b{
@@ -74,19 +74,23 @@ a.b{
   text-decoration:none;
   color:var(--fg);
   font-weight:600;
-  margin:.45rem 0;
-  transition:transform .12s ease,background .15s ease,box-shadow .15s ease;
+  margin:.5rem 0;
+  background:var(--btn2);
+  border:1px solid var(--line);
+  transition:transform .12s ease,background .15s ease,box-shadow .15s ease,border-color .15s ease;
 }
+a.b:hover{background:var(--btn2-h);border-color:#8a3816}
 a.b.p{
   background:linear-gradient(135deg,var(--btn),var(--btn-end));
-  box-shadow:0 6px 20px #0006,inset 0 1px 0 #ffffff22;
+  border-color:#c95616;
+  box-shadow:0 6px 20px #0006,inset 0 1px 0 #ffffff24;
 }
-a.b.p:hover{transform:translateY(-1px);box-shadow:0 8px 24px #0008,0 0 0 1px var(--cyan)}
-a.b.s{background:var(--btn2);border:1px solid var(--line);font-weight:500}
-a.b.s:hover{background:var(--btn2-h);border-color:#2d5685}
-.bl{display:flex;flex-direction:column;gap:.12rem;min-width:0}
-.fn{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;color:var(--mut);font-weight:400}
-.sz{font-size:.82rem;color:var(--mut);white-space:nowrap}
+a.b.p:hover{transform:translateY(-1px);box-shadow:0 8px 24px #0008,0 0 0 1px var(--accent)}
+.bt{display:flex;flex-direction:column;gap:.12rem;min-width:0}
+.bt small{font-weight:400;font-size:.82rem;color:var(--mut)}
+.row-top{display:flex;align-items:baseline;flex-wrap:wrap;gap:.45rem}
+.fn{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;color:#ffd8a8;font-weight:400}
+.sz{font-size:.8rem;color:var(--mut);font-weight:400;white-space:nowrap}
 .qr{
   display:none;
   align-items:center;
@@ -96,17 +100,18 @@ a.b.s:hover{background:var(--btn2-h);border-color:#2d5685}
   border-top:1px solid var(--line);
 }
 .desk .qr{display:flex}
-.qr img{width:116px;height:116px;border-radius:10px;background:#fff;padding:6px;flex:none}
-.qr p{margin:0;font-size:.88rem;color:var(--mut)}
+.qr img{width:110px;height:110px;border-radius:10px;background:#fff;padding:6px;flex:none}
+.qr span{font-size:.88rem;color:var(--mut)}
 ol{margin:.25rem 0 0;padding-left:1.25rem;color:var(--mut);font-size:.92rem}
 ol li{margin:.35rem 0}
 ol strong,ol code{color:var(--fg)}
 code.srv{
-  background:#0a1f36;
+  background:#240b03;
   border:1px solid var(--line);
   border-radius:6px;
   padding:.08rem .35rem;
   font-size:.86em;
+  color:#ffd8a8;
 }
 details{font-size:.85rem;color:var(--mut)}
 summary{cursor:pointer;color:var(--fg);font-weight:600;list-style:none}
@@ -117,7 +122,7 @@ summary::-webkit-details-marker{display:none}
   align-items:center;
   justify-content:space-between;
   gap:.5rem;
-  background:#071424;
+  background:#1f0a03;
   border:1px solid var(--line);
   border-radius:10px;
   padding:.55rem .7rem;
@@ -143,17 +148,17 @@ summary::-webkit-details-marker{display:none}
   color:var(--fg);
   cursor:pointer;
 }
-.copy-button:hover{background:var(--btn2-h);border-color:var(--cyan)}
-.copy-button .ic-ok{display:none;color:#5ee0ff}
+.copy-button:hover{background:var(--btn2-h);border-color:var(--accent)}
+.copy-button .ic-ok{display:none;color:var(--accent)}
 .copy-button[data-copied] .ic-cp{display:none}
 .copy-button[data-copied] .ic-ok{display:block}
 .tip{
   position:absolute;
   right:0;
   bottom:calc(100% + 6px);
-  background:#0b233d;
-  color:var(--cyan);
-  border:1px solid var(--cyan);
+  background:#361306;
+  color:var(--accent);
+  border:1px solid var(--accent);
   border-radius:6px;
   font-size:.72rem;
   padding:.15rem .45rem;
@@ -165,45 +170,44 @@ summary::-webkit-details-marker{display:none}
 .copy-button[data-copied] + .tip,
 .copy-button[data-failed] + .tip{opacity:1}
 footer{margin-top:1.5rem;font-size:.8rem;color:var(--mut);text-align:center}
-footer a{color:var(--cyan);text-decoration:none}
+footer a{color:var(--accent);text-decoration:none}
 footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <span class="eyebrow">BookOrbit · Android</span>
-    <h1>Lagrange Reader</h1>
-    <p class="lead">Cliente Android preconfigurado con el servidor de libros. Solo hace falta iniciar sesión con tu usuario y contraseña.</p>
-    <p id="ver" class="ver">Cargando última versión…</p>
-  </header>
+  <a class="hero" id="hero" href="/libros/apk" aria-label="Descargar Lagrange Reader APK">
+    <img src="/cabecera-libros-v1-640.webp" srcset="/cabecera-libros-v1-640.webp 640w, /cabecera-libros-v1-1024.webp 1024w" sizes="(max-width: 34rem) 100vw, 34rem" alt="Lectura galáctica de libros: descargar APK" width="1024" height="338" fetchpriority="high" decoding="async">
+  </a>
+  <p class="lead">App de lectura para Android preconfigurada con nuestro servidor de libros. Solo hace falta introducir tu usuario y contraseña.</p>
+  <p id="ver" class="ver"></p>
 
   <section class="mine">
     <h2>Android <span class="tag">Recomendado</span></h2>
     <a class="b p" href="/libros/apk" data-a="lagrange-lulos.apk">
-      <span class="bl">
-        <span>Descargar APK universal</span>
-        <code class="fn">lagrange-lulos.apk</code>
+      <span class="bt">
+        <span class="row-top">Aplicación .apk (universal) <code class="fn">lagrange-lulos.apk</code> <span class="sz"></span></span>
+        <small>Recomendado. Compatible con cualquier móvil o tablet Android.</small>
       </span>
-      <span class="sz"></span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"/></svg>
     </a>
-    <a class="b s" href="/libros/arm64" data-a="lagrange-lulos-arm64.apk">
-      <span class="bl">
-        <span>APK solo ARM64 (más ligero)</span>
-        <code class="fn">lagrange-lulos-arm64.apk</code>
+    <a class="b" href="/libros/arm64" data-a="lagrange-lulos-arm64.apk">
+      <span class="bt">
+        <span class="row-top">Aplicación .apk (ARM64) <code class="fn">lagrange-lulos-arm64.apk</code> <span class="sz"></span></span>
+        <small>Más ligero, para móviles y tablets Android modernos de 64 bits.</small>
       </span>
-      <span class="sz"></span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"/></svg>
     </a>
     <div class="qr">
-      <img src="/qr-libros.svg" alt="Código QR para descargar Lagrange Reader APK" width="116" height="116">
-      <p>Escanea el QR desde tu móvil o tablet Android para bajar directamente la última versión.</p>
+      <img src="/qr-libros.svg" alt="Código QR para bajar la app de libros en Android" width="110" height="110" loading="lazy">
+      <span>¿Estás en el ordenador? Escanea este código con el móvil para bajar la app.</span>
     </div>
   </section>
 
   <section>
     <h2>Cómo empezar</h2>
     <ol>
-      <li>Instala el APK (si Android avisa, permite instalar apps desde el navegador).</li>
+      <li>Instala el APK (el teléfono pedirá permiso para instalar aplicaciones de este origen).</li>
       <li>Abre <strong>Lagrange</strong>: ya apunta a <code class="srv">https://book.lulospi.party</code>.</li>
       <li>Introduce tu <strong>usuario y contraseña</strong> de BookOrbit.</li>
     </ol>
@@ -217,8 +221,9 @@ footer a:hover{text-decoration:underline}
   </section>
 
   <footer>
+    <a href="/">← Todas las descargas</a> ·
     Basado en <a href="https://github.com/van-geaux/lagrange-reader" rel="noopener">Lagrange Reader</a> ·
-    Compilación automática en <a href="https://github.com/karbono/lagrange-lulos/releases/tag/custom" rel="noopener">karbono/lagrange-lulos</a>
+    <a href="https://github.com/karbono/lagrange-lulos/releases/tag/custom" rel="noopener">karbono/lagrange-lulos</a>
   </footer>
 </div>
 
@@ -284,12 +289,14 @@ footer a:hover{text-decoration:underline}
         if (x.updated_at > when) when = x.updated_at;
         if (x.size) {
           var s = a.querySelector(".sz");
-          if (s) s.textContent = Math.round(x.size / 1048576) + " MB";
+          if (s) s.textContent = "· " + Math.round(x.size / 1048576) + " MB";
         }
       });
       when = when || d.published_at || d.created_at;
-      document.getElementById("ver").textContent = (ver ? "Versión " + ver : "Última compilación") +
-        (when ? " · actualizada el " + new Date(when).toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}) : "");
+      if (ver || when) {
+        document.getElementById("ver").textContent = (ver ? "Versión " + ver : "Última compilación") +
+          (when ? " · actualizada el " + new Date(when).toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}) : "");
+      }
 
       var list = document.getElementById("sumlist"), rows = [];
       document.querySelectorAll("a[data-a]").forEach(function(a, idx){
@@ -331,9 +338,7 @@ footer a:hover{text-decoration:underline}
         });
       }
     })
-    .catch(function(){
-      document.getElementById("ver").textContent = "Descarga siempre la última compilación disponible.";
-    });
+    .catch(function(){});
 })();
 </script>
 </body>

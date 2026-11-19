@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Descargas · lulospi</title>
+<meta name="description" content="Descargas preconfiguradas de lulospi: soporte remoto y biblioteca de libros.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050d18">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=http://www.w3.org/2000/svg viewBox=0 0 32 32><rect width=32 height=32 rx=8 fill=%230a192e/><path d=M16 6v12m0 0-5-5m5 5 5-5M8 23h16 stroke=%235ee0ff stroke-width=2.6 stroke-linecap=round stroke-linejoin=round fill=none/></svg>">
+<style>
+:root{
+  --bg:#050d18; --bg2:#0a1728; --card:#0e2038; --line:#1e3a5c;
+  --fg:#ebf6ff; --mut:#9db8d2; --cyan:#5ee0ff;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  line-height:1.5;
+  color:var(--fg);
+  background:
+    radial-gradient(1100px 560px at 85% -8%,#143961 0,transparent 60%),
+    radial-gradient(820px 460px at -10% 28%,#0e2b4d 0,transparent 55%),
+    var(--bg);
+  min-height:100vh;
+}
+.wrap{max-width:34rem;margin:0 auto;padding:1.75rem 1rem 3rem}
+.eyebrow{
+  display:inline-block;
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--cyan);
+  background:#0c2844;
+  border:1px solid #1d4a75;
+  border-radius:999px;
+  padding:.18rem .65rem;
+  margin-bottom:.6rem;
+}
+h1{font-size:1.6rem;line-height:1.2;margin:0 0 .35rem}
+.lead{margin:0 0 1.4rem;color:var(--mut);font-size:.98rem}
+.grid{display:flex;flex-direction:column;gap:.9rem}
+a.card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  background:linear-gradient(180deg,var(--card),var(--bg2));
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:1.1rem 1.15rem;
+  text-decoration:none;
+  color:var(--fg);
+  transition:transform .14s ease,border-color .15s ease,box-shadow .15s ease;
+}
+a.card:hover{
+  transform:translateY(-2px);
+  border-color:var(--cyan);
+  box-shadow:0 8px 28px #0008,0 0 0 1px var(--cyan);
+}
+.meta{display:flex;flex-direction:column;gap:.2rem;min-width:0}
+.title{font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.badge{
+  font-size:.7rem;
+  font-weight:600;
+  color:var(--cyan);
+  background:#0b2640;
+  border:1px solid #1f4c78;
+  padding:.08rem .48rem;
+  border-radius:999px;
+}
+.desc{font-size:.88rem;color:var(--mut)}
+.path{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;color:#74a9cc;margin-top:.15rem}
+.arrow{flex:none;color:var(--cyan)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="eyebrow">dl.lulospi.party</span>
+  <h1>Descargas</h1>
+  <p class="lead">Aplicaciones preconfiguradas listas para instalar.</p>
+
+  <div class="grid">
+    <a class="card" href="/remoto">
+      <div class="meta">
+        <span class="title">Soporte remoto <span class="badge">RustDesk</span></span>
+        <span class="desc">Asistencia remota para Windows, Android y Linux.</span>
+        <span class="path">/remoto</span>
+      </div>
+      <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+    </a>
+
+    <a class="card" href="/libros">
+      <div class="meta">
+        <span class="title">Biblioteca de libros <span class="badge">Lagrange Reader</span></span>
+        <span class="desc">App Android preconfigurada para BookOrbit.</span>
+        <span class="path">/libros</span>
+      </div>
+      <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+    </a>
+  </div>
+</div>
+</body>
+</html>
