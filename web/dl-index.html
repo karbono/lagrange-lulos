@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Descargas · lulospi</title>
+<title>Portal galáctico de descargas</title>
 <meta name="description" content="Descargas preconfiguradas de lulospi: soporte remoto y biblioteca de libros.">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#050d18">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=http://www.w3.org/2000/svg viewBox=0 0 32 32><rect width=32 height=32 rx=8 fill=%230a192e/><path d=M16 6v12m0 0-5-5m5 5 5-5M8 23h16 stroke=%235ee0ff stroke-width=2.6 stroke-linecap=round stroke-linejoin=round fill=none/></svg>">
+<meta name="theme-color" content="#021a1d">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=http://www.w3.org/2000/svg viewBox=0 0 32 32><rect width=32 height=32 rx=8 fill=%23042c30/><path d=M16 6v12m0 0-5-5m5 5 5-5M8 23h16 stroke=%236ff2cf stroke-width=2.6 stroke-linecap=round stroke-linejoin=round fill=none/></svg>">
 <style>
 :root{
-  --bg:#050d18; --bg2:#0a1728; --card:#0e2038; --line:#1e3a5c;
-  --fg:#ebf6ff; --mut:#9db8d2; --cyan:#5ee0ff;
+  --bg:#021a1d; --bg2:#04262a; --card:#073337; --line:#14565b;
+  --fg:#e8fff7; --mut:#94ccc3; --accent:#6ff2cf;
 }
 *{box-sizing:border-box}
 html{background:var(--bg)}
@@ -21,26 +21,21 @@ body{
   line-height:1.5;
   color:var(--fg);
   background:
-    radial-gradient(1100px 560px at 85% -8%,#143961 0,transparent 60%),
-    radial-gradient(820px 460px at -10% 28%,#0e2b4d 0,transparent 55%),
+    radial-gradient(1100px 560px at 85% -8%,#0b5357 0,transparent 60%),
+    radial-gradient(820px 460px at -10% 28%,#063c42 0,transparent 55%),
     var(--bg);
   min-height:100vh;
 }
-.wrap{max-width:34rem;margin:0 auto;padding:1.75rem 1rem 3rem}
-.eyebrow{
-  display:inline-block;
-  font-size:.72rem;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--cyan);
-  background:#0c2844;
-  border:1px solid #1d4a75;
-  border-radius:999px;
-  padding:.18rem .65rem;
-  margin-bottom:.6rem;
+.wrap{max-width:34rem;margin:0 auto;padding:1rem 1rem 3rem}
+.hero{
+  display:block;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 12px 40px #000a,0 0 28px #6ff2cf1c,0 0 0 1px #1c6a70;
+  margin-top:.5rem;
 }
-h1{font-size:1.6rem;line-height:1.2;margin:0 0 .35rem}
-.lead{margin:0 0 1.4rem;color:var(--mut);font-size:.98rem}
+.hero img{display:block;width:100%;height:auto;aspect-ratio:1024/338}
+.lead{margin:1.25rem 0 1rem;color:var(--mut);font-size:1rem;text-wrap:pretty}
 .grid{display:flex;flex-direction:column;gap:.9rem}
 a.card{
   display:flex;
@@ -57,33 +52,37 @@ a.card{
 }
 a.card:hover{
   transform:translateY(-2px);
-  border-color:var(--cyan);
-  box-shadow:0 8px 28px #0008,0 0 0 1px var(--cyan);
+  border-color:var(--accent);
+  box-shadow:0 8px 28px #0008,0 0 0 1px var(--accent);
 }
+a.card.remoto:hover{border-color:#5ee0ff;box-shadow:0 8px 28px #0008,0 0 0 1px #5ee0ff}
+a.card.libros:hover{border-color:#ffbf5e;box-shadow:0 8px 28px #0008,0 0 0 1px #ffbf5e}
 .meta{display:flex;flex-direction:column;gap:.2rem;min-width:0}
-.title{font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.title{font-size:1.1rem;font-weight:700;display:flex;align-items:center;flex-wrap:wrap;gap:.5rem}
 .badge{
   font-size:.7rem;
-  font-weight:600;
-  color:var(--cyan);
-  background:#0b2640;
-  border:1px solid #1f4c78;
-  padding:.08rem .48rem;
+  font-weight:700;
+  padding:.1rem .52rem;
   border-radius:999px;
 }
+.remoto .badge{color:#041624;background:#5ee0ff}
+.libros .badge{color:#260c03;background:#ffbf5e}
 .desc{font-size:.88rem;color:var(--mut)}
-.path{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;color:#74a9cc;margin-top:.15rem}
-.arrow{flex:none;color:var(--cyan)}
+.path{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;color:#7fdcc7;margin-top:.15rem}
+.arrow{flex:none;color:var(--accent)}
+.remoto .arrow{color:#5ee0ff}
+.libros .arrow{color:#ffbf5e}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <span class="eyebrow">dl.lulospi.party</span>
-  <h1>Descargas</h1>
-  <p class="lead">Aplicaciones preconfiguradas listas para instalar.</p>
+  <div class="hero">
+    <img src="/cabecera-portal-v1-640.webp" srcset="/cabecera-portal-v1-640.webp 640w, /cabecera-portal-v1-1024.webp 1024w" sizes="(max-width: 34rem) 100vw, 34rem" alt="Portal galáctico de descargas" width="1024" height="338" fetchpriority="high" decoding="async">
+  </div>
+  <p class="lead">Elige la aplicación preconfigurada que quieres descargar.</p>
 
   <div class="grid">
-    <a class="card" href="/remoto">
+    <a class="card remoto" href="/remoto">
       <div class="meta">
         <span class="title">Soporte remoto <span class="badge">RustDesk</span></span>
         <span class="desc">Asistencia remota para Windows, Android y Linux.</span>
@@ -92,9 +91,9 @@ a.card:hover{
       <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
     </a>
 
-    <a class="card" href="/libros">
+    <a class="card libros" href="/libros">
       <div class="meta">
-        <span class="title">Biblioteca de libros <span class="badge">Lagrange Reader</span></span>
+        <span class="title">Lectura de libros <span class="badge">Lagrange Reader</span></span>
         <span class="desc">App Android preconfigurada para BookOrbit.</span>
         <span class="path">/libros</span>
       </div>
