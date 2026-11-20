@@ -6,7 +6,7 @@ import sys
 import zipfile
 from pathlib import Path
 
-EXPECTED_URL = os.environ.get("SERVER_URL", "https://book.lulospi.party").strip().encode("utf-8")
+EXPECTED_URL = os.environ.get("SERVER_URL", "https://book.karbono.es").strip().encode("utf-8")
 
 
 def verify_apk(apk_path: Path) -> None:

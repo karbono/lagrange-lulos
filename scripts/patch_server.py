@@ -6,7 +6,7 @@ import re
 import sys
 from pathlib import Path
 
-DEFAULT_URL = os.environ.get("SERVER_URL", "https://book.lulospi.party").strip()
+DEFAULT_URL = os.environ.get("SERVER_URL", "https://book.karbono.es").strip()
 DEFAULT_NAME = os.environ.get("SERVER_NAME", "BookOrbit").strip()
 
 

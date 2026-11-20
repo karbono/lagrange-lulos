@@ -1,6 +1,6 @@
 # lagrange-lulos
 
-Compilación automática en GitHub Actions de [Lagrange Reader](https://github.com/van-geaux/lagrange-reader) para Android, preconfigurada con el servidor BookOrbit (`https://book.lulospi.party`).
+Compilación automática en GitHub Actions de [Lagrange Reader](https://github.com/van-geaux/lagrange-reader) para Android, preconfigurada con el servidor BookOrbit (`https://book.karbono.es`).
 
 Al abrir la app por primera vez, se salta la configuración de servidor y va directa a la pantalla de usuario y contraseña.
 
@@ -15,5 +15,5 @@ Al abrir la app por primera vez, se salta la configuración de servidor y va dir
 
 ## Descarga
 
-- Página web: `https://dl.lulospi.party/libros`
-- Enlace directo APK universal: `https://dl.lulospi.party/libros/apk`
+- Página web: `https://dl.karbono.es/libros`
+- Enlace directo APK universal: `https://dl.karbono.es/libros/apk`
