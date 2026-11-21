@@ -34,13 +34,16 @@ jobs:
         id: compare
         env:
           GH_TOKEN: ${{ github.token }}
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_FORCE: ${{ inputs.force }}
         run: |
-          if [ -n "${{ inputs.tag }}" ]; then
-            TAG="${{ inputs.tag }}"
+          if [ -n "$INPUT_TAG" ]; then
+            TAG="$INPUT_TAG"
           else
             TAG=$(curl -fsSL "https://api.github.com/repos/${UPSTREAM_REPO}/releases/latest" | jq -r '.tag_name')
           fi
           test -n "$TAG" && [ "$TAG" != "null" ] || { echo "Failed to resolve upstream tag" >&2; exit 1; }
+          printf '%s' "$TAG" | grep -Eq '^v?[0-9]+(\.[0-9]+){1,3}([-.][0-9A-Za-z.]+)?$' || { echo "Invalid upstream tag format" >&2; exit 1; }
           VERSION="${TAG#v}"
           echo "Upstream tag: $TAG (version $VERSION)"
 
@@ -50,7 +53,7 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-          if [ "${{ inputs.force }}" = "true" ] || [ "$VERSION" != "$CURRENT" ]; then
+          if [ "$INPUT_FORCE" = "true" ] || [ "$VERSION" != "$CURRENT" ]; then
             echo "should_build=true" >> "$GITHUB_OUTPUT"
           else
             echo "Up to date ($VERSION). Skipping build."
@@ -63,11 +66,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out customizer repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Clone upstream Lagrange Reader (${{ needs.check.outputs.tag }})
+        env:
+          UPSTREAM_TAG: ${{ needs.check.outputs.tag }}
         run: |
-          git clone --depth 1 --branch "${{ needs.check.outputs.tag }}" \
+          git clone --depth 1 --branch "$UPSTREAM_TAG" \
             "https://github.com/${UPSTREAM_REPO}.git" upstream
 
       - name: Patch default BookOrbit server
@@ -75,16 +80,16 @@ jobs:
           python3 scripts/patch_server.py upstream/app/src/main/java/com/vangeaux/lagrange/AppCoordinator.kt
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
         with:
           distribution: temurin
           java-version: '17'
 
       - name: Set up Gradle cache
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
         with:
           packages: platform-tools
 
@@ -116,6 +121,8 @@ jobs:
         run: ./gradlew assembleRelease -PreleaseAbiSplits --no-daemon --console=plain
 
       - name: Verify injected server URL and package fixed-name assets
+        env:
+          VERSION: ${{ needs.check.outputs.version }}
         run: |
           OUT="upstream/app/build/outputs/apk/release"
           DIST="dist"
@@ -126,16 +133,16 @@ jobs:
 
           python3 scripts/verify_apk.py "$DIST/lagrange-lulos.apk" "$DIST/lagrange-lulos-arm64.apk"
 
-          printf '%s\n' "${{ needs.check.outputs.version }}" > "$DIST/lagrange-lulos-VERSION.txt"
+          printf '%s\n' "$VERSION" > "$DIST/lagrange-lulos-VERSION.txt"
           (cd "$DIST" && sha256sum lagrange-lulos.apk lagrange-lulos-arm64.apk > lagrange-lulos-SHA256SUMS.txt)
           cat "$DIST/lagrange-lulos-SHA256SUMS.txt"
 
       - name: Publish custom release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.check.outputs.tag }}
+          VER: ${{ needs.check.outputs.version }}
         run: |
-          TAG="${{ needs.check.outputs.tag }}"
-          VER="${{ needs.check.outputs.version }}"
           NOTES=$(cat <<EOF
           Compilación automática de [Lagrange Reader ${TAG}](https://github.com/${UPSTREAM_REPO}/releases/tag/${TAG}) preconfigurada para **${SERVER_URL}** (BookOrbit).
 

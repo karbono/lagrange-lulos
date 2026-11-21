@@ -129,6 +129,7 @@ summary::-webkit-details-marker{display:none}
 }
 .sha-info{min-width:0;display:flex;flex-direction:column;gap:.15rem}
 .sha-name{font-size:.78rem;color:var(--fg);font-weight:600}
+.note{font-size:.8rem;color:var(--muted,inherit);margin-top:.6rem}
 .sha-info code{
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:.72rem;
@@ -215,7 +216,8 @@ footer a:hover{text-decoration:underline}
 
   <section>
     <details>
-      <summary>Verificación SHA256</summary>
+      <summary>SHA256 (para verificar manualmente)</summary>
+      <p class="note">Estos valores los publica GitHub junto con la propia release; el navegador no comprueba el archivo descargado. Para verificarlo, ejecuta en una terminal: <code>sha256sum lagrange-lulos.apk</code> y compara el resultado con el valor de abajo.</p>
       <div id="sumlist" class="sha-list">Cargando firmas…</div>
     </details>
   </section>
